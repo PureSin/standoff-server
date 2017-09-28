@@ -71,6 +71,7 @@ io.on('connection', socket => {
   console.log('connection!', socket.id, players)
 
   socket.on(EVENTS.joinGame, data => {
+    console.log('join game', data)
     const user = players.find(player => socketId === player.id)
     user.waiting = true
 
