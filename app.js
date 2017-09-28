@@ -9,7 +9,7 @@ const players = []
 const games = []
 
 const EVENTS = {
-  JoinGame:'JoinGame',
+  joinGame:'joinGame',
   connect:'connect',
   startGame:'startGame',
   gameEnd:'gameEnd',
@@ -70,7 +70,7 @@ io.on('connection', socket => {
 
   console.log('connection!', socket.id, players)
 
-  socket.on(EVENTS.JoinGame, data => {
+  socket.on(EVENTS.joinGame, data => {
     const user = players.find(player => socketId === player.id)
     user.waiting = true
 
