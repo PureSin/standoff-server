@@ -8,6 +8,9 @@ const inProd = process.env.NODE_ENV === 'production'
 const players = []
 const games = []
 
+const MAX_ROUNDS = 3
+const COUNT_DOWN_TIME = 5
+
 const EVENTS = {
   joinGame:'joinGame',
   connect:'connect',
@@ -42,12 +45,27 @@ class Game{
     io.to(roomId).emit(EVENTS.startGame, roomId)
   }
 
+
+  start() {
+    while(!game.isFinished()) {
+      startRound()
+      // wait for seconds
+      endRound()
+    }
+    end()
+  }
+
   startRound(){
-    // io.to(roomId).emit(EVENTS.startGame, roomId)
+    io.to(roomId).emit(EVENTS.startRound, roomId)
+
   }
 
   endRound(){
+      this.round++
+  }
 
+  isFinished() {
+    return this.round == MAX_ROUNDS
   }
 
   end(){
@@ -84,6 +102,8 @@ io.on('connection', socket => {
       const game = new Game(roomId, [ pair.id, socketId ])
       game.init()
       games.push(game)
+
+      game.start()
     }
   })
 
